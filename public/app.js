@@ -36,11 +36,21 @@ const newCoffe = {
       <input v-model="coffe.name" type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Digite nombre">
     </div>
     <div class="form-group">
-      <label for="coffeInput">Café</label>
-      <input v-model="coffe.type" type="text" class="form-control" id="coffeInput" placeholder="Tipo de café">
+      <label for="content">Café</label>
+      <input v-model="coffe.content" type="text" class="form-control" id="content" placeholder="Tipo de café">
     </div>
     <button @click.prevent="saveCoffe" class="btn btn-primary">Guardar</button>
   </form>
+  <div v-if="invoice.hasOwnProperty('id')" class="jumbotron jumbotron-fluid my-4">
+    <div class="container">
+      <h3 class="display-4">Orden: {{ invoice.name }} - {{ invoice.content }}</h3>
+      <p class="lead">
+        <pre>
+          {{invoice}}
+        </pre>
+      </p>
+    </div>
+  </div>
   `,
   components: {
     statusValidation
@@ -48,16 +58,24 @@ const newCoffe = {
   setup() {
     const coffe = vue.ref({
       name: 'Kevin Méndez',
-      type: 'Expreso'
+      content: 'Expreso'
     });
 
-    const saveCoffe = async () => {
-      const coffee = await axios.post('/api/v1/coffee', {
-        ...coffe.value
-      });
-      console.log(coffee);
+    const invoice = vue.ref({});
+
+    const saveCoffe = () => {
+      axios
+        .post('/api/v1/coffee', {
+          ...coffe.value
+        })
+        .then((res) => {
+          coffe.value.name = '';
+          coffe.value.content = '';
+          invoice.value = res.data.data;
+        });
     };
-    return { coffe, saveCoffe };
+
+    return { coffe, saveCoffe, invoice };
   }
 };
 
