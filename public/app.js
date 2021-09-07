@@ -16,12 +16,46 @@ const statusValidation = {
   }
 };
 
+const coffeList = {
+  template: `
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Café</th>
+        <th scope="col">Pagado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(coffe, index) in coffees" :key="coffe.id">
+        <th scope="row">{{ index + 1 }}</th>
+        <td>{{ coffe.name }}</td>
+        <td>{{ coffe.content }}</td>
+        <td>{{ coffe.paid ? 'Pagado' : 'Pendiente' }}</td>
+      </tr>
+    </tbody>
+  </table>
+`,
+  setup() {
+    let coffees = vue.ref([]);
+
+    vue.onMounted(async () => {
+      const info = await axios.get('/api/v1/coffee');
+      coffees.value = info.data.data.coffees;
+    });
+    return { coffees };
+  }
+};
+
 const Main = {
   template: `
     <status-validation />
+    <coffe-list/>
   `,
   components: {
-    statusValidation
+    statusValidation,
+    coffeList
   },
   setup() {
     return {};

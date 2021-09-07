@@ -39,3 +39,12 @@ export const newCoffe = async (req: any, reply: any) => {
     })
   }
 }
+
+export const coffeList = async (req: any, reply: any) => {
+  const coffees = coffe.all()
+  return reply.send({
+    data: {
+      coffees
+    }
+  })
+}
