@@ -25,6 +25,7 @@ const coffeList = {
         <th scope="col">Nombre</th>
         <th scope="col">Café</th>
         <th scope="col">Pagado</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +34,7 @@ const coffeList = {
         <td>{{ coffe.name }}</td>
         <td>{{ coffe.content }}</td>
         <td>{{ coffe.paid ? 'Pagado' : 'Pendiente' }}</td>
+        <td><button @click="payInvoice(coffe.request)" type="button" class="btn btn-primary">Pagar</button></td>
       </tr>
     </tbody>
   </table>
@@ -44,7 +46,18 @@ const coffeList = {
       const info = await axios.get('/api/v1/coffee');
       coffees.value = info.data.data.coffees;
     });
-    return { coffees };
+
+    const payInvoice = (request) => {
+      axios
+        .post('/api/v1/coffee/pay', {
+          request
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    };
+
+    return { coffees, payInvoice };
   }
 };
 
