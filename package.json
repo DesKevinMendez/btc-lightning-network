@@ -1,0 +1,24 @@
+{
+  "name": "btc-lightning-network",
+  "version": "1.0.0",
+  "description": "Example of lightning network for dev",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DesKevinMendez/btc-lightning-network.git"
+  },
+  "keywords": [
+    "Bitcoin",
+    "BTC",
+    "lightning"
+  ],
+  "author": "Kevin Méndez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DesKevinMendez/btc-lightning-network/issues"
+  },
+  "homepage": "https://github.com/DesKevinMendez/btc-lightning-network#readme"
+}
