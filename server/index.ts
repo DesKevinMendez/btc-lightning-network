@@ -1,18 +1,22 @@
 // Require the framework and instantiate it
 import path from 'path';
 const FastifySSEPlugin = require('fastify-sse');
-
-import Fastify, { FastifyInstance, FastifyRequest } from 'fastify'
+import Fastify, { FastifyInstance } from 'fastify'
 import dotenv from 'dotenv';
-dotenv.config();
+import routesWeb from './routes/index'
 
 export class BTCLighntning {
   fastify: FastifyInstance = Fastify({ logger: { prettyPrint: true } });
 
   constructor() {
+    this.dotenv()
     this.registerStatic()
     this.registerPluging()
     this.routes();
+  }
+
+  private dotenv() {
+    dotenv.config();
   }
 
   private registerStatic() {
@@ -26,9 +30,7 @@ export class BTCLighntning {
   }
 
   private routes() {
-    this.fastify.get('/', async (request: FastifyRequest, reply: any) => {
-      return reply.sendFile('index.html')
-    })
+    this.fastify.register(routesWeb)
   }
 
   public async startServer() {
