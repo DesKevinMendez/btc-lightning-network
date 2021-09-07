@@ -6,26 +6,38 @@ import Fastify, { FastifyInstance, FastifyRequest } from 'fastify'
 import dotenv from 'dotenv';
 dotenv.config();
 
-const fastify: FastifyInstance = Fastify({ logger: { prettyPrint: true } });
+export class BTCLighntning {
+  fastify: FastifyInstance = Fastify({ logger: { prettyPrint: true } });
 
-fastify.register(require('fastify-static'), {
-  root: path.join(process.cwd(), 'public')
-});
+  constructor() {
+    this.registerStatic()
+    this.registerPluging()
+    this.routes();
+  }
 
-fastify.register(FastifySSEPlugin);
+  private registerStatic() {
+    this.fastify.register(require('fastify-static'), {
+      root: path.join(process.cwd(), 'public')
+    });
+  }
 
-// Declare a route
-fastify.get('/', async (request: FastifyRequest, reply: any) => {
-  return reply.sendFile('index.html')
-})
+  private registerPluging() {
+    this.fastify.register(FastifySSEPlugin);
+  }
 
-// Run the server!
-export const start = async () => {
-  const port = process.env.PORT || 3005;
-  try {
-    await fastify.listen(port)
-  } catch (err) {
-    fastify.log.error(err)
-    process.exit(1)
+  private routes() {
+    this.fastify.get('/', async (request: FastifyRequest, reply: any) => {
+      return reply.sendFile('index.html')
+    })
+  }
+
+  public async startServer() {
+    const port = process.env.PORT || 3005;
+    try {
+      await this.fastify.listen(port)
+    } catch (err) {
+      this.fastify.log.error(err)
+      process.exit(1)
+    }
   }
 }
