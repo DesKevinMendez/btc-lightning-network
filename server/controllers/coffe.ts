@@ -33,7 +33,7 @@ export const newCoffe = async (req: any, reply: any) => {
     return reply.send({
       success: false,
       data: {
-        message: 'We could get invoice, try again.',
+        message: 'We could\'nt get invoice, try again.',
         error: e
       }
     })
