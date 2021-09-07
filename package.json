@@ -36,6 +36,7 @@
     "fastify-sse": "^1.0.0",
     "fastify-static": "^4.2.3",
     "ln-service": "^52.1.0",
-    "nanoid": "^3.1.25"
+    "nanoid": "^3.1.25",
+    "uuid": "^8.3.2"
   }
 }
