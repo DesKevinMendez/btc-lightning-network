@@ -24,13 +24,13 @@ export const newCoffe = async (req: any, reply: any) => {
         request: invoice.request,
         preimage: invoice.secret,
       });
-      return reply.json({
+      return reply.send({
         success: true,
         data: p,
       });
     }
   } catch (e) {
-    return reply.json({
+    return reply.send({
       success: false,
       data: {
         message: 'We could get invoice, try again.',
