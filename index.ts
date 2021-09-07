@@ -1,9 +1,11 @@
 // Require the framework and instantiate it
-const path = require('path');
+import path from 'path';
+
 const FastifySSEPlugin = require('fastify-sse');
 
-const Fastify = require('fastify')
-require('dotenv').config();
+import Fastify from 'fastify'
+import dotenv from 'dotenv';
+dotenv.config();
 
 const fastify = Fastify({ logger: { prettyPrint: true } });
 
@@ -14,7 +16,7 @@ fastify.register(require('fastify-static'), {
 fastify.register(FastifySSEPlugin);
 
 // Declare a route
-fastify.get('/', async (request: Request, reply: any) => {
+fastify.get('/', async (request, reply: any) => {
   return reply.sendFile('index.html')
 })
 
