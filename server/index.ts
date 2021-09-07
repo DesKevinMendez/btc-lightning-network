@@ -4,6 +4,7 @@ const FastifySSEPlugin = require('fastify-sse');
 import Fastify, { FastifyInstance } from 'fastify'
 import dotenv from 'dotenv';
 import routesWeb from './routes/index'
+import routesApi from './routes/lnd'
 
 export class BTCLighntning {
   fastify: FastifyInstance = Fastify({ logger: { prettyPrint: true } });
@@ -31,6 +32,7 @@ export class BTCLighntning {
 
   private routes() {
     this.fastify.register(routesWeb)
+    this.fastify.register(routesApi, { prefix: 'v1/lnd' })
   }
 
   public async startServer() {
