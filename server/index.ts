@@ -32,7 +32,7 @@ export class BTCLighntning {
 
   private routes() {
     this.fastify.register(routesWeb)
-    this.fastify.register(routesApi, { prefix: 'v1/lnd' })
+    this.fastify.register(routesApi, { prefix: 'api/v1/lnd' }) // api/v1/lnd/info
   }
 
   public async startServer() {
