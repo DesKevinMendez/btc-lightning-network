@@ -24,6 +24,7 @@ const coffeList = {
         <th scope="col">#</th>
         <th scope="col">Nombre</th>
         <th scope="col">Café</th>
+        <th scope="col">Total pagar</th>
         <th scope="col">Pagado</th>
         <th scope="col">Acciones</th>
       </tr>
@@ -33,8 +34,9 @@ const coffeList = {
         <th scope="row">{{ index + 1 }}</th>
         <td>{{ coffe.name }}</td>
         <td>{{ coffe.content }}</td>
+        <td>{{ coffe.tokens }}</td>
         <td>{{ coffe.paid ? 'Pagado' : 'Pendiente' }}</td>
-        <td><button @click="payInvoice(coffe.request)" type="button" class="btn btn-primary">Pagar</button></td>
+        <td><button @click="payInvoice(coffe.request, coffe.tokens)" type="button" class="btn btn-primary">Pagar</button></td>
       </tr>
     </tbody>
   </table>
@@ -47,10 +49,11 @@ const coffeList = {
       coffees.value = info.data.data.coffees;
     });
 
-    const payInvoice = (request) => {
+    const payInvoice = (request, tokens) => {
       axios
         .post('/api/v1/coffee/pay', {
-          request
+          request,
+          tokens
         })
         .then((res) => {
           console.log(res);
@@ -86,6 +89,10 @@ const newCoffe = {
       <label for="content">Café</label>
       <input v-model="coffe.content" type="text" class="form-control" id="content" placeholder="Tipo de café">
     </div>
+    <div class="form-group">
+      <label for="price">Total a pagar</label>
+      <input v-model.number="coffe.tokens" type="number" class="form-control" id="price" placeholder="Precio en satoshis">
+    </div>
     <button @click.prevent="saveCoffe" class="btn btn-primary">Guardar</button>
   </form>
   <div v-if="invoice.hasOwnProperty('id')" class="jumbotron jumbotron-fluid my-4">
@@ -105,7 +112,8 @@ const newCoffe = {
   setup() {
     const coffe = vue.ref({
       name: 'Kevin Méndez',
-      content: 'Expreso'
+      content: 'Expreso',
+      tokens: 100
     });
 
     const invoice = vue.ref({});
@@ -118,6 +126,7 @@ const newCoffe = {
         .then((res) => {
           coffe.value.name = '';
           coffe.value.content = '';
+          coffe.value.tokens = '';
           invoice.value = res.data.data;
         });
     };

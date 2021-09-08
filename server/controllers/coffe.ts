@@ -9,11 +9,11 @@ export const newCoffe = async (req: any, reply: any) => {
     macaroon: process.env.LND_MACAROON_BASE64,
     socket: process.env.LND_GRPC_HOST,
   });
-  const { name, content } = req.body;
+  const { name, content, tokens } = req.body;
   try {
     const invoice = await lnservice.createInvoice({
       lnd,
-      tokens: 1000,
+      tokens,
       description: name,
     });
     if (!!invoice) {
@@ -23,6 +23,7 @@ export const newCoffe = async (req: any, reply: any) => {
         hash: invoice.id,
         request: invoice.request,
         preimage: invoice.secret,
+        tokens: invoice.tokens,
       });
       return reply.send({
         success: true,
@@ -50,11 +51,12 @@ export const coffeList = async (req: any, reply: any) => {
 }
 
 export const payCoffe = async (req: any, reply: any) => {
-  const { request } = req.body;
+  const { request, tokens } = req.body;
 
   return reply.send({
     data: {
-      request
+      request,
+      tokens
     }
   })
 }

@@ -9,13 +9,14 @@ declare type CoffeType = {
   hash: string | null;
   preimage: string | null;
   request: string | null;
+  tokens: string | null;
 }
 
 class Coffe {
   constructor(private coffes: CoffeType[] = []) {
     this.coffes = [];
   }
-  public add({ time, name, content, paid, hash, preimage, request }: CoffeType) {
+  public add({ time, name, content, paid, hash, preimage, request, tokens }: CoffeType) {
     const coffe: CoffeType = {
       id: uuidv4(),
       time: time || new Date(),
@@ -25,6 +26,7 @@ class Coffe {
       hash: hash || null,
       preimage: preimage || null,
       request: request || null,
+      tokens: tokens || null,
     };
     this.coffes.push(coffe);
 
