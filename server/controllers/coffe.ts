@@ -70,9 +70,18 @@ export const payCoffe = async (req: any, reply: any) => {
       }
     })
   } catch (error: any) {
+    let message = '';
+    if (error[1] === "UnexpectedPaymentError") {
+      message = error[2].err.details
+    } else if (error[1] === "PaymentPathfindingFailedToFindPossibleRoute") {
+      message = "Payment path finding failed to find possible route"
+    }
+
     return reply.status(400).send({
       success: false,
-      message: error[2].err.details,
+      code: error[0],
+      errorIdentifier: error[1],
+      message,
     })
   }
 }
