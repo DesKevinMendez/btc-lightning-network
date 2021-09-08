@@ -44,9 +44,13 @@ const coffeList = {
   setup() {
     let coffees = vue.ref([]);
 
-    vue.onMounted(async () => {
+    const getCoffees = async () => {
       const info = await axios.get('/api/v1/coffee');
       coffees.value = info.data.data.coffees;
+    }
+
+    vue.onMounted(async () => {
+      await getCoffees();
     });
 
     const payInvoice = (request, tokens) => {
@@ -56,7 +60,7 @@ const coffeList = {
           tokens
         })
         .then((res) => {
-          console.log(res);
+          getCoffees()
         });
     };
 

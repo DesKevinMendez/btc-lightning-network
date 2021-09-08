@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 
-declare type CoffeType = {
+export declare type CoffeType = {
   id?: string;
   time?: Date;
   name: string;

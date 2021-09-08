@@ -1,5 +1,4 @@
 const lnservice = require('ln-service');
-// const coffe = require('../models/Coffe');
 import coffe from '../models/Coffe'
 
 
@@ -59,12 +58,15 @@ export const payCoffe = async (req: any, reply: any) => {
   });
   try {
     const pay = await lnservice.pay({ lnd, request })
+
     const cof = coffe.findByRequest(request);
+    coffe.paid(<string>cof?.hash)
 
     return reply.send({
-      data: {
+      success: true,
+      coffee: {
         ...cof,
-        paid: pay.is_confirmed
+        paid: pay.is_confirmed,
       }
     })
   } catch (error: any) {
