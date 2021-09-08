@@ -41,6 +41,10 @@ class Coffe {
     return this.coffes.find(p => p.hash === hash);
   }
 
+  public findByRequest(request: string) {
+    return this.coffes.find(p => p.request === request);
+  }
+
   public all() {
     return this.coffes;
   }

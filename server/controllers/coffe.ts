@@ -51,12 +51,26 @@ export const coffeList = async (req: any, reply: any) => {
 }
 
 export const payCoffe = async (req: any, reply: any) => {
-  const { request, tokens } = req.body;
+  const { request } = req.body;
+  const { lnd } = lnservice.authenticatedLndGrpc({
+    cert: process.env.LND_CERT_BASE64,
+    macaroon: process.env.LND_MACAROON_BASE64,
+    socket: process.env.LND_GRPC_HOST,
+  });
+  try {
+    const pay = await lnservice.pay({ lnd, request })
+    const cof = coffe.findByRequest(request);
 
-  return reply.send({
-    data: {
-      request,
-      tokens
-    }
-  })
+    return reply.send({
+      data: {
+        ...cof,
+        paid: pay.is_confirmed
+      }
+    })
+  } catch (error: any) {
+    return reply.status(400).send({
+      success: false,
+      message: error[2].err.details,
+    })
+  }
 }
