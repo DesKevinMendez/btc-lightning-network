@@ -1,17 +1,12 @@
 const lnservice = require('ln-service');
 import coffe from '../models/Coffe'
-
+import { authLnd } from '../utils/authenticatedLnd'
 
 export const newCoffe = async (req: any, reply: any) => {
-  const { lnd } = lnservice.authenticatedLndGrpc({
-    cert: process.env.LND_CERT_BASE64,
-    macaroon: process.env.LND_MACAROON_BASE64,
-    socket: process.env.LND_GRPC_HOST,
-  });
   const { name, content, tokens } = req.body;
   try {
     const invoice = await lnservice.createInvoice({
-      lnd,
+      lnd: authLnd(),
       tokens,
       description: name,
     });
@@ -51,13 +46,8 @@ export const coffeList = async (req: any, reply: any) => {
 
 export const payCoffe = async (req: any, reply: any) => {
   const { request } = req.body;
-  const { lnd } = lnservice.authenticatedLndGrpc({
-    cert: process.env.LND_CERT_BASE64,
-    macaroon: process.env.LND_MACAROON_BASE64,
-    socket: process.env.LND_GRPC_HOST,
-  });
   try {
-    const pay = await lnservice.pay({ lnd, request })
+    const pay = await lnservice.pay({ lnd: authLnd(), request })
 
     const cof = coffe.findByRequest(request);
     coffe.paid(<string>cof?.hash)
